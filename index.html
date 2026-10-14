@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>遺言の種類 暗記アプリ</title>
+
+<style>
+body {
+  font-family: sans-serif;
+  margin: 16px;
+  color: #222;
+}
+h1 {
+  font-size: 22px;
+}
+.note {
+  color: #555;
+  font-size: 14px;
+}
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+button {
+  cursor: pointer;
+  font: inherit;
+}
+.tool {
+  padding: 9px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: white;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 850px;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.7;
+}
+th {
+  background: #f3f3f3;
+}
+.table-wrap {
+  overflow-x: auto;
+}
+.reveal {
+  border: none;
+  background: transparent;
+  color: red;
+  font-weight: bold;
+  padding: 0 2px;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.reveal.hidden {
+  color: transparent;
+  background: #eee;
+  text-decoration: none;
+}
+.reveal.hidden::after {
+  content: "タップ";
+  color: #777;
+  font-size: 12px;
+  font-weight: normal;
+}
+</style>
+</head>
+
+<body>
+<h1>遺言の種類 暗記アプリ</h1>
+<p class="note">
+赤字をタップすると答えが表示されます。
+もう一度タップすると隠れます。
+</p>
+
+<div class="tools">
+  <button class="tool" onclick="setAll(true)">すべて隠す</button>
+  <button class="tool" onclick="setAll(false)">すべて表示</button>
+  <button class="tool" onclick="toggleAll()">表示・非表示を切替</button>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+  <th>遺言の種類</th>
+  <th>証人</th>
+  <th>証人になれない人</th>
+  <th>検認</th>
+  <th>保管</th>
+  <th>署名・押印</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+  <td>自筆証書遺言</td>
+  <td><button class="reveal">不要</button></td>
+  <td>―</td>
+  <td>
+    <button class="reveal">必要</button>
+    （<button class="reveal">法務局</button>保管なら
+    <button class="reveal">不要</button>）
+  </td>
+  <td><button class="reveal">法務局</button>にすることができる</td>
+  <td><button class="reveal">必要</button></td>
+</tr>
+
+<tr>
+  <td>公正証書遺言</td>
+  <td><button class="reveal">2人</button>以上</td>
+  <td>
+    ①<button class="reveal">未成年者</button><br>
+    ②<button class="reveal">推定相続人</button><br>
+    ③<button class="reveal">受遺者</button><br>
+    ④(②③の)<button class="reveal">配偶者</button>や
+    <button class="reveal">直系血族</button>など
+  </td>
+  <td><button class="reveal">不要</button></td>
+  <td><button class="reveal">公証役場</button></td>
+  <td><button class="reveal">不要</button></td>
+</tr>
+
+<tr>
+  <td>秘密証書遺言</td>
+  <td><button class="reveal">2人</button>以上</td>
+  <td>
+    ①<button class="reveal">未成年者</button><br>
+    ②<button class="reveal">推定相続人</button><br>
+    ③<button class="reveal">受遺者</button><br>
+    ④(②③の)<button class="reveal">配偶者</button>や
+    <button class="reveal">直系血族</button>など
+  </td>
+  <td><button class="reveal">必要</button></td>
+  <td>―</td>
+  <td><button class="reveal">必要</button></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p id="status"></p>
+
+<script>
+const answers = document.querySelectorAll(".reveal");
+
+answers.forEach(button => {
+  button.addEventListener("click", () => {
+    button.classList.toggle("hidden");
+    updateStatus();
+  });
+});
+
+function setAll(hide) {
+  answers.forEach(button => {
+    button.classList.toggle("hidden", hide);
+  });
+  updateStatus();
+}
+
+function toggleAll() {
+  const anyVisible = [...answers].some(
+    button => !button.classList.contains("hidden")
+  );
+  setAll(anyVisible);
+}
+
+function updateStatus() {
+  const visible = [...answers].filter(
+    button => !button.classList.contains("hidden")
+  ).length;
+  document.getElementById("status").textContent =
+    `${visible} / ${answers.length} 項目を表示中`;
+}
+
+setAll(true);
+</script>
+</body>
+</html>
